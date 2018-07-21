@@ -10,15 +10,15 @@ function shuffle(arr) {
 }
 
 
-function handleFlippedCards(cardClicked, LastCardClicked) {
-    function triggerPointerEvents(isClickable) {
-        cards = document.getElementsByClassName('card');
-        for (let i of cards) {
-            i.style.pointerEvents = isClickable ? 'auto' : 'none';
-        }
+function triggerPointerEvents(isClickable) {
+    cards = document.getElementsByClassName('card');
+    for (let i of cards) {
+        i.style.pointerEvents = isClickable ? 'auto' : 'none';
     }
+}
 
 
+function handleFlippedCards(cardClicked, LastCardClicked) {
     function set_original() {
         LastCardClicked.firstElementChild.setAttribute('class', originalCardImage);
         cardClicked.firstElementChild.setAttribute('class', originalCardImage);
@@ -26,6 +26,7 @@ function handleFlippedCards(cardClicked, LastCardClicked) {
         cardClicked.style.backgroundColor = 'white';
         triggerPointerEvents(true);
     }
+
 
     var originalCardImage = "fas fa-magic awesome-img"
     var isCardsSimilar = cardClicked.firstElementChild.className == LastCardClicked.firstElementChild.className;
@@ -43,6 +44,7 @@ function handleFlippedCards(cardClicked, LastCardClicked) {
 
 function memoryGame() {
     var cards = document.getElementsByClassName("card");
+    // shuffle, layout images
     var images = ["fas fa-american-sign-language-interpreting", "fas fa-bong", "fas fa-cannabis", "fas fa-joint",
         "fas fa-smoking", "fas fa-tablets", "fas fa-syringe", "fab fa-untappd", "far fa-sad-cry", "fab fa-bitcoin",
         "fas fa-archway", "fab fa-bluetooth-b", "fas fa-binoculars", "fas fa-blind", "fas fa-blender", "fas fa-bezier-curve",
@@ -56,6 +58,7 @@ function memoryGame() {
 
     for (let i = 0; i < cards.length; i++) {
         cards[i].addEventListener('click',function () {
+            // checking if card is already flipped up
             var originalCardImage = "fas fa-magic awesome-img";
             if (this.firstElementChild.className == originalCardImage) {
 
@@ -72,10 +75,30 @@ function memoryGame() {
     }
 }
 
-function main() {
-    memoryGame();
+
+function createCards() {
+    var dropdown = document.getElementById('dropdown');
+    dropdown.addEventListener('mouseup', layoutCards)
+
+
+    function layoutCards() {
+        var selectedNum = dropdown.value;
+        var parentDiv = document.getElementById('card-parent-div');
+
+        var cardLayout = '<div class="col-xs-6 col-sm-4 col-lg-3 margin-auto-padding-0" > \
+                          <div class="card"> \
+                          <i class="fas fa-magic awesome-img"></i> \
+                          </div>\
+                          </div>'.repeat(selectedNum * 2);
+        parentDiv.innerHTML = cardLayout;
+
+        memoryGame();
+    }
 }
 
+function main() {
+    createCards();
+}
 
 main();
 
